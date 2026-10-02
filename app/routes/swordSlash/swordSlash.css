@@ -1,0 +1,72 @@
+/* Container to lock down the viewport during the animation */
+.slash-viewport {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #0b0b0f; /* Color revealed beneath the split */
+}
+
+.slash-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Common styles for both overlapping halves */
+.screen-half {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a24; /* Your actual website background */
+    color: #ffffff;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+}
+
+/* Cut diagonally from top-right corner to bottom-left corner */
+.half-left {
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* Cut the reverse side */
+.half-right {
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+/* --- Animation states when .slashed is active --- */
+.slashed .half-left {
+    /* Slides up and left */
+    transform: translate(-80px, -80px) rotate(-1.5deg);
+}
+
+.slashed .half-right {
+    /* Slides down and right */
+    transform: translate(80px, 80px) rotate(1.5deg);
+}
+
+/* Optional: Dramatic white slash line that blinks across the center */
+.slash-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    rotate: 15deg;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(135deg, transparent 49.5%, #ffffff 50%, #ffffff 50.5%, transparent 51%);
+    opacity: 0;
+    z-index: 10;
+}
+
+.slashed .slash-line {
+    animation: flash 0.1s ease-out forwards;
+}
+
+@keyframes flash {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    100% { opacity: 0; }
+}
